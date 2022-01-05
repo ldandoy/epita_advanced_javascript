@@ -1,45 +1,56 @@
 const express = require('express')
+const bcrypt = require('bcrypt')
+const { validEmail, validPassword } = require('../utils/valid')
 
 const userModel = require('../models/user')
 
 let router = express.Router()
 
-router.post('/register', (req, res) => {
+router.post('/register', async (req, res) => {
     try {
-        const inputDatas = req.body
-        console.log(inputDatas)
-        let errors = []
+        const {email, email_cfg, password, password_cfg} = req.body
 
-        if (!inputDatas.email) {
-            errors.push({
-                field: "email",
-                message: "required fields"
-            })
+        let errors = {
+            email: [],
+            email_cfg: [],
+            password: [],
+            password_cfg: []
+        }
+        
+        if (email !== email_cfg) {
+            errors.email.push("Email confirmation not match")
+            errors.email_cfg.push("Email confirmation not match")
         }
 
-        if (!inputDatas.email_cfg) {
-            errors.push({
-                field: "email_cfg",
-                message: "required fields"
-            })
+        if (password !== password_cfg) {
+            errors.password.push("Password confirmation not match")
+            errors.password_cfg.push("Password Confirmation not match")
         }
 
-        if (!inputDatas.password) {
-            errors.push({
-                field: "password",
-                message: "required fields"
-            })
-        }
+        errors = validEmail(errors, email)
+        errors = validPassword(errors, password)
 
-        if (!inputDatas.password_cfg) {
-            errors.push({
-                field: "password_cfg",
-                message: "required fields"
-            })
-        }
-
-        if (errors.length > 0) {
+        if (errors.email.length > 0 || errors.email_cfg.length > 0 || errors.password.length > 0 || errors.password_cfg > 0) {
             return res.status(500).json(errors)
+        }
+
+        // crypt the password
+        const saltRounds = 10
+        const salt = bcrypt.genSaltSync(saltRounds)
+        const hash = bcrypt.hashSync(password, salt)
+
+        const user = await userModel.findOne({email: email})
+
+        if (!user) {
+            await userModel.create({
+                email: email,
+                password: hash,
+                username: username
+            })
+
+            return res.status(200).json({msg: "User well created !"})
+        } else {
+            return res.status(500).json({msg: "User already created !"})
         }
     } catch (error) {
         console.error(error)
