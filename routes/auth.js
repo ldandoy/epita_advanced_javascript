@@ -8,7 +8,7 @@ let router = express.Router()
 
 router.post('/register', async (req, res) => {
     try {
-        const {email, email_cfg, password, password_cfg} = req.body
+        const {email, email_cfg, password, password_cfg, username} = req.body
 
         let errors = {
             email: [],
