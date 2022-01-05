@@ -1,14 +1,22 @@
-const express = require('express')
-const bodyParser = require('body-parser')
-const morgan = require('morgan')
+const express       = require('express')
+const bodyParser    = require('body-parser')
+const morgan        = require('morgan')
+const helmet        = require('helmet')
+
+require('./utils/data')
 
 const messagesRoute = require('./routes/messages')
+const authRoute     = require('./routes/auth')
 
 const app = express()
 app.use(morgan('dev'))
-app.use(bodyParser.json())
+app.use(helmet())
+app.use(bodyParser.json({
+    extended: true
+}))
 
-app.use('/api/messages', messagesRoute)
+app.use('/api/messages',    messagesRoute)
+app.use('/api',             authRoute)
 
 app.get('/', (req, res) => {
     // return res.status(200).send('<h1>Hello World</h1>')
