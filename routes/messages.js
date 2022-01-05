@@ -8,7 +8,7 @@ let messages = []
 
 router.get('/', async (req, res) => {
     try {
-        messages = await messageModel.find()
+        messages = await messageModel.find().populate({ path: 'autor', select: 'username email' })
         return res.status(200).json(messages)
     } catch (error) {
         console.error(error)
@@ -28,11 +28,18 @@ router.get('/:messageId', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
-        const inputDatas = req.body
+        if (!req.session.user) {
+            return res.status(500).json({msg: "You have to login to add message !"})
+        }
+
+        const {content} = req.body
         
         // messages.push(message)
 
-        let message = await messageModel.create(inputDatas)
+        let message = await messageModel.create({
+            content: content,
+            autor: req.session.user._id
+        })
         return res.status(200).json(message)
     } catch (error) {
         console.error(error)

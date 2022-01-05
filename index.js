@@ -2,6 +2,7 @@ const express       = require('express')
 const bodyParser    = require('body-parser')
 const morgan        = require('morgan')
 const helmet        = require('helmet')
+const session       = require('express-session')
 
 require('./utils/data')
 
@@ -13,6 +14,13 @@ app.use(morgan('dev'))
 app.use(helmet())
 app.use(bodyParser.json({
     extended: true
+}))
+app.use(session({
+    path: '/',
+    httpOnly: true,
+    secure: true,
+    maxAge: null,
+    secret: "Secret12"
 }))
 
 app.use('/api/messages',    messagesRoute)

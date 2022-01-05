@@ -58,9 +58,34 @@ router.post('/register', async (req, res) => {
     }
 })
 
-router.post('/login', (req, res) => {
+router.post('/login', async (req, res) => {
     try {
+        const {email, password} = req.body
+        let errors = {
+            email: [],
+            password: [],
+        }
 
+        errors = validEmail(errors, email)
+        errors = validPassword(errors, password)
+
+        if (errors.email.length > 0 || errors.password.length > 0) {
+            return res.status(500).json(errors)
+        }
+
+        const user = await userModel.findOne({email: email})
+
+        if (user) {
+            if (bcrypt.compareSync(password, user.password)) {
+                req.session.user = user
+
+                return res.status(200).json({msg: "Login success !"})
+            } else {
+                return res.status(500).json({msg: "Login failed !"})
+            }
+        } else {
+            return res.status(500).json({msg: "Login failed !"})
+        }
     } catch (error) {
         console.error(error)
         return res.status(500).json(error.message)

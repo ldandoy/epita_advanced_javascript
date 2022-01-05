@@ -2,7 +2,8 @@ const mongoose = require('mongoose')
 
 const messageSchema = new mongoose.Schema({
     autor: {
-        type: String,
+        type: mongoose.Types.ObjectId,
+        ref: 'User',
         required: true
     },
     content: {
