@@ -9,7 +9,7 @@ const Hello = ({ name }) => {
         <h1>Hello { finalName } !</h1>
         <div>
             <ul>
-                {array.map(item => <li>
+                {array.map((item, index) => <li key={`hello-${index}`}>
                     {item}
                 </li>)}
             </ul>

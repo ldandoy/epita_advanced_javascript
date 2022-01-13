@@ -1,20 +1,39 @@
-import React, { useState } from 'react'
-import { FaPlus } from 'react-icons/fa'
+import React, {useEffect, useState} from 'react'
+import axios from 'axios'
 
 const Facts = () => {
-    const [count, setCount] = useState(0)
+    const [fact, setFact] = useState(null)
 
-    const handlerOnClick = () => {
-        setCount(count+1)
+    const getRandomFact = async () => {
+        const res = await axios.get('https://api.chucknorris.io/jokes/random')
+        console.log(res.data.value)
+        setFact(res.data.value)
     }
 
+    useEffect(() => {
+        getRandomFact()
+
+        /*axios.get('https://api.chucknorris.io/jokes/random')
+        .then(res => {
+            console.log(res.data.value)
+            setFact(res.data.value)
+        })
+        .catch(error => {
+            console.error(error)
+        })*/
+
+        console.log("test")
+    }, [])
+
+    useEffect(() => {
+        if (fact)
+            console.log("test 1")
+    },[fact])
+
     return (
-        <div>
-            {count}
-            <br />
-            <button onClick={handlerOnClick}>
-                <FaPlus />
-            </button>
+        <div id="fact-container">
+            {!fact && <>Loading...</>}
+            {fact && <div className="fact">{fact}</div>}
         </div>
     )
 }

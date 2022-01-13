@@ -1,20 +1,31 @@
 import React, {useContext} from 'react'
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 
 import { ThemeContext } from './contexts/themes'
-import Hello from './components/Hello'
-import Facts from './components/Facts'
+
+import Home from './pages/Home'
+import Animals from './pages/Animals'
+
 import SwicherMode from './components/SwicherMode'
-import TestForm from './components/TestForm'
 
 const App = () => {
     const [{ theme }] = useContext(ThemeContext)
 
-    return (<div className='app' style={theme}>
-        <SwicherMode />
-        <Hello name="Loïc" />
-        <Facts />
-        <TestForm />
-    </div>)
+    return (<BrowserRouter>
+        <div className='app' style={theme}>
+            <SwicherMode />
+
+            <nav>
+                <Link to="/">Home</Link>
+                <Link to="/animals">Animals</Link>
+            </nav>
+
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path='/animals' element={<Animals />} />
+            </Routes>
+        </div>
+    </BrowserRouter>)
 }
 
 export default App
