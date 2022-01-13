@@ -5,6 +5,8 @@ import { ThemeContext } from './contexts/themes'
 
 import Home from './pages/Home'
 import Animals from './pages/Animals'
+import Login from './pages/Login'
+import Register from './pages/Register'
 
 import SwicherMode from './components/SwicherMode'
 
@@ -18,11 +20,15 @@ const App = () => {
             <nav>
                 <Link to="/">Home</Link>
                 <Link to="/animals">Animals</Link>
+                <Link to ='/login'>Login</Link>
+                <Link to='/register'>Register</Link>
             </nav>
 
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path='/animals' element={<Animals />} />
+                <Route path='/login' element={<Login />} />
+                <Route path='/register' element={<Register />} />
             </Routes>
         </div>
     </BrowserRouter>)
