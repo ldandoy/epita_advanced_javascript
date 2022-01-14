@@ -77,6 +77,7 @@ router.post('/login', async (req, res) => {
 
         if (user) {
             if (bcrypt.compareSync(password, user.password)) {
+                console.log(user)
                 req.session.user = user
 
                 return res.status(200).json({msg: "Login success !"})
@@ -85,6 +86,20 @@ router.post('/login', async (req, res) => {
             }
         } else {
             return res.status(500).json({msg: "Login failed !"})
+        }
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json(error.message)
+    }
+})
+
+router.get('/me', (req, res) => {
+    try {
+        console.log(req.session.user)
+        if (req.session && req.session.user) {
+            return res.status(200).json(req.session.user)
+        } else {
+            return res.status(500).json({msg: "You are not logged !"})
         }
     } catch (error) {
         console.error(error)

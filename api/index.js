@@ -3,6 +3,7 @@ const bodyParser    = require('body-parser')
 const morgan        = require('morgan')
 const helmet        = require('helmet')
 const session       = require('express-session')
+const cors          = require('cors')
 
 require('./utils/data')
 
@@ -12,6 +13,10 @@ const authRoute     = require('./routes/auth')
 const app = express()
 app.use(morgan('dev'))
 app.use(helmet())
+app.use(cors({
+    credentials: true,
+    origin: ['http://localhost:3000']
+}))
 app.use(bodyParser.json({
     extended: true
 }))

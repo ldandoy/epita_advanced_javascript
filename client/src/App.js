@@ -1,5 +1,6 @@
-import React, {useContext} from 'react'
+import React, {useContext, useEffect} from 'react'
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
+import axios from 'axios'
 
 import { ThemeContext } from './contexts/themes'
 
@@ -12,6 +13,22 @@ import SwicherMode from './components/SwicherMode'
 
 const App = () => {
     const [{ theme }] = useContext(ThemeContext)
+
+    useEffect(() => {
+        const getUser = async () => {
+            try {
+                const res = await axios.get(`${process.env.REACT_APP_API_URL}/me`, {
+                    withCredentials: true
+                })
+                console.log("getUSer", res.data)
+            } catch (error) {
+                console.error(error.response.data)
+            }
+        }
+
+        getUser()
+        
+    }, [])
 
     return (<BrowserRouter>
         <div className='app' style={theme}>
