@@ -77,10 +77,12 @@ router.post('/login', async (req, res) => {
 
         if (user) {
             if (bcrypt.compareSync(password, user.password)) {
-                console.log(user)
                 req.session.user = user
 
-                return res.status(200).json({msg: "Login success !"})
+                return res.status(200).json({
+                    msg: "Login success !",
+                    user: user
+                })
             } else {
                 return res.status(500).json({msg: "Login failed !"})
             }
@@ -93,9 +95,21 @@ router.post('/login', async (req, res) => {
     }
 })
 
+router.get('/logout', (req, res) => {
+    try {
+        if (req.session && req.session.user) {
+            req.session.destroy();
+        }
+
+        return res.status(200).json({msg: "Logout !"})
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json(error.message)
+    }
+})
+
 router.get('/me', (req, res) => {
     try {
-        console.log(req.session.user)
         if (req.session && req.session.user) {
             return res.status(200).json(req.session.user)
         } else {

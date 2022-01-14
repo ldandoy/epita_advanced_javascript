@@ -1,9 +1,13 @@
 import React, {useState} from 'react'
 import axios from 'axios'
+import {useRecoilState} from 'recoil'
 import {Link, useNavigate} from 'react-router-dom'
+
+import userState from '../atoms/userAtom'
 
 const LoginForm = () => {
     let navigate = useNavigate()
+    const [user, setUser] = useRecoilState(userState)
     const [form, setForm] = useState({
         email: '',
         password: ''
@@ -22,7 +26,10 @@ const LoginForm = () => {
                 withCredentials: true
             })
 
-            console.log(res.data)
+            setUser({
+                isAuth: true,
+                user: res.data.user
+            })
 
             navigate('/')
         } catch(error) {

@@ -6,7 +6,6 @@ const Facts = () => {
 
     const getRandomFact = async () => {
         const res = await axios.get('https://api.chucknorris.io/jokes/random')
-        console.log(res.data.value)
         setFact(res.data.value)
     }
 
@@ -22,13 +21,7 @@ const Facts = () => {
             console.error(error)
         })*/
 
-        console.log("test")
     }, [])
-
-    useEffect(() => {
-        if (fact)
-            console.log("test 1")
-    },[fact])
 
     return (
         <div id="fact-container">
