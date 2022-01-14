@@ -10,12 +10,13 @@ import Home from './pages/Home'
 import Animals from './pages/Animals'
 import Login from './pages/Login'
 import Register from './pages/Register'
+import Logout from './pages/Logout'
 
 import SwicherMode from './components/SwicherMode'
 
 const App = () => {
     const [{ theme }] = useContext(ThemeContext)
-    const [user, setUser] = useRecoilState(userState);
+    const [user, setUser] = useRecoilState(userState)
 
     useEffect(() => {
         const getUser = async () => {
@@ -47,6 +48,7 @@ const App = () => {
                 { !user.isAuth && <Link to ='/login'>Login</Link> }
                 { !user.isAuth && <Link to='/register'>Register</Link> }
                 { user.isAuth && <Link to ='/account'>{user.user.email}</Link>}
+                { user.isAuth && <Link to ='/logout'>Logout</Link>}
             </nav>
 
             <Routes>
@@ -54,6 +56,7 @@ const App = () => {
                 <Route path='/animals' element={<Animals />} />
                 <Route path='/login' element={<Login />} />
                 <Route path='/register' element={<Register />} />
+                <Route path='/logout' element={<Logout />} />
             </Routes>
         </div>
     </BrowserRouter>)
