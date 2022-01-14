@@ -18,9 +18,12 @@ const LoginForm = () => {
         event.preventDefault()
 
         try {
-            await axios.post(`${process.env.REACT_APP_API_URL}/login`, form, {
+            const res = await axios.post(`${process.env.REACT_APP_API_URL}/login`, form, {
                 withCredentials: true
             })
+
+            console.log(res.data)
+
             navigate('/')
         } catch(error) {
             console.error(error.response.data)
