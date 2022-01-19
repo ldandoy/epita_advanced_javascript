@@ -1,14 +1,15 @@
 const express = require('express')
 
 const messageModel = require('../models/message')
+const auth = require('../middlewares/auth')
 
 let router = express.Router()
 
 let messages = []
 
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
     try {
-        messages = await messageModel.find().populate({ path: 'autor', select: 'username email' })
+        messages = await messageModel.find({autor: req.session.user._id}).populate({ path: 'autor', select: 'username email' })
         return res.status(200).json(messages)
     } catch (error) {
         console.error(error)
@@ -16,7 +17,7 @@ router.get('/', async (req, res) => {
     }
 })
 
-router.get('/:messageId', async (req, res) => {
+router.get('/:messageId', auth, async (req, res) => {
     try {
         let message = messageModel.findOne({_id: req.params.messageId})
         return res.status(200).json(message)
@@ -26,7 +27,7 @@ router.get('/:messageId', async (req, res) => {
     }
 })
 
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
     try {
         if (!req.session.user) {
             return res.status(500).json({msg: "You have to login to add message !"})
@@ -47,12 +48,12 @@ router.post('/', async (req, res) => {
     }
 })
 
-router.put('/:messageId', async (req, res) => {
+router.put('/:messageId', auth, async (req, res) => {
     try {
         const inputDatas = req.body
 
         let message = await messageModel.findOneAndUpdate(
-            { _id: req.params.messageId },
+            { _id: req.params.messageId, autor: req.session.user._id },
             inputDatas,
             { new: true }
         )
@@ -64,7 +65,7 @@ router.put('/:messageId', async (req, res) => {
     }
 })
 
-router.delete('/:messageId', async (req,res) => {
+router.delete('/:messageId', auth, async (req,res) => {
     try {
         await messageModel.findOneAndDelete({_id: req.params.messageId})
         
