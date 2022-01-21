@@ -4,8 +4,12 @@
     box-sizing: border-box;
 }
 
+body {
+    margin-top: 49px;
+}
+
 .app {
-    width: 100vw;
+    width: 100%;
     height: 100vh;
 }
 
@@ -13,6 +17,8 @@
     cursor: pointer;
 }
 
-nav a {
-    margin: 10px;
+.title {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
 }

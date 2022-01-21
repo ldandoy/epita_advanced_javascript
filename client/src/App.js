@@ -8,20 +8,18 @@ import Animals from './pages/Animals'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Logout from './pages/Logout'
+import Messages from './pages/Messages'
 import Default from './layouts/Default'
-
-import SwicherMode from './components/SwicherMode'
 
 const App = () => {
     const [{ theme }] = useContext(ThemeContext)
 
     return (<BrowserRouter>
         <div className='app' style={theme}>
-            <SwicherMode />
-
             <Routes>
                 <Route path="/" element={<Default><Home /></Default>} />
                 <Route path='/animals' element={<Default><Animals /></Default>} />
+                <Route path='/messages' element={<Default><Messages /></Default>} />
                 <Route path='/login' element={<Default><Login /></Default>} />
                 <Route path='/register' element={<Default><Register /></Default>} />
                 <Route path='/logout' element={<Default><Logout /></Default>} />

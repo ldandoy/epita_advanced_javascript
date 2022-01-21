@@ -3,6 +3,7 @@ import axios from 'axios'
 import { useRecoilState } from "recoil"
 import { Link } from "react-router-dom"
 
+import SwicherMode from '../components/SwicherMode'
 import userState from "../atoms/userAtom"
 
 const Default = ({children}) => {
@@ -27,19 +28,36 @@ const Default = ({children}) => {
         
     }, [])
 
-    return (
-        <div>
-            <nav>
-                <Link to="/">Home</Link>
-                <Link to="/animals">Animals</Link>
-                { !user.isAuth && <Link to ='/login'>Login</Link> }
-                { !user.isAuth && <Link to='/register'>Register</Link> }
-                { user.isAuth && <Link to ='/account'>{user.user.email}</Link>}
-                { user.isAuth && <Link to ='/logout'>Logout</Link>}
-            </nav>
+    return (<>
+        <nav className="bg-blue-800 navbar-dark navbar navbar-fixed-top">
+            <div className="navbar-container-fluid">
+                <div className="navbar-content-menu">
+                    <ul className="navbar-menu navbar-menu-left">
+                        <li className="navbar-item">
+                            <Link className="navbar-link" to="/">Home</Link>
+                        </li>
+                        <li className="navbar-item">
+                            <Link className="navbar-link" to="/animals">Animals</Link>
+                        </li>
+                        { user.isAuth && <li className="navbar-item">
+                            <Link className="navbar-link" to ='/messages'>Messages</Link>
+                        </li>}
+                    </ul>
+
+                    <ul className="navbar-menu-right plr-10">
+                        { !user.isAuth && <li className="navbar-item"><Link className="navbar-link" to ='/login'>Login</Link></li> }
+                        { !user.isAuth && <li className="navbar-item"><Link className="navbar-link" to='/register'>Register</Link></li> }
+                        { user.isAuth && <li className="navbar-item"><Link className="navbar-link" to ='/account'>{user.user.email}</Link></li>}
+                        { user.isAuth && <li className="navbar-item"><Link className="navbar-link" to ='/logout'>Logout</Link></li>}
+                        <li className="navbar-item"><SwicherMode /></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div className="container pt-40">
             {children}
         </div>
-    )
+    </>)
 }
 
 export default Default

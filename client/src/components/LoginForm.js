@@ -38,9 +38,9 @@ const LoginForm = () => {
     }
 
     return (
-        <form onSubmit={handlerOnSubmit}>
-            <div>
-                <label htmlFor='email'>Your email</label>
+        <form className="form-bordered w-50 mx-auto" onSubmit={handlerOnSubmit}>
+            <div className="form-group">
+                <label className="form-label" htmlFor='email'>Your email</label>
                 <input
                     type="email"
                     name="email"
@@ -48,10 +48,11 @@ const LoginForm = () => {
                     placeholder='Enter your email'
                     onChange={handlerOnChange}
                     required={true}
+                    className="form-input"
                 />
             </div>
-            <div>
-                <label htmlFor='password'>Your password</label>
+            <div className="form-group">
+                <label className="form-label" htmlFor='password'>Your password</label>
                 <input
                     type="password"
                     name="password"
@@ -59,12 +60,13 @@ const LoginForm = () => {
                     placeholder='Enter your password'
                     onChange={handlerOnChange}
                     required={true}
+                    className="form-input"
                 />
             </div>
-            <div>
-                <button type='submit'>Login</button>
+            <div className="form-group">
+                <button className='btn bg-red-400 txt-white w-100' type='submit'>Login</button>
             </div>
-            <div>
+            <div className="form-group txt-center txt-small">
                 <Link to="/register">Don't have any account ?</Link>
             </div>
         </form>
