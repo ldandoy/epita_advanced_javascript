@@ -1,9 +1,13 @@
 import React, {useState} from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { useRecoilState } from "recoil"
+
+import messagesState from '../atoms/messagesAtom'
 
 const FormMessages = () => {
     let navigate = useNavigate()
+    const [messages, setMessages] = useRecoilState(messagesState)
     const [form, setFrom] = useState({ content: '' })
 
     const handlerSubmit = async (event) => {
@@ -12,7 +16,8 @@ const FormMessages = () => {
             withCredentials: true
         })
         console.log(res.data)
-        navigate('/messages')
+        setMessages([...messages, res.data])
+        setFrom({ content: '' })
     }
 
     const handlerOnChange = async (event) => {

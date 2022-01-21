@@ -54,6 +54,9 @@ router.post('/', auth, async (req, res) => {
             content: content,
             autor: req.session.user._id
         })
+
+        await message.populate({ path: 'autor', select: 'username email'})
+        
         return res.status(200).json(message)
     } catch (error) {
         console.error(error)
@@ -75,6 +78,7 @@ router.put('/:messageId', auth, async (req, res) => {
         },
         { content },
         { new: true })
+        .populate({ path: 'autor', select: 'username email'})
         
         return res.status(200).json(message)
     } catch (error) {

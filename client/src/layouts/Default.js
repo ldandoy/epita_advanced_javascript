@@ -54,7 +54,7 @@ const Default = ({children}) => {
                 </div>
             </div>
         </nav>
-        <div className="container pt-40">
+        <div className="container ptb-40">
             {children}
         </div>
     </>)
