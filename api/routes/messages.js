@@ -1,4 +1,6 @@
 const express = require('express')
+const multer = require('multer')
+const path = require('path')
 
 const messageModel = require('../models/message')
 const auth = require('../middlewares/auth')
@@ -6,6 +8,18 @@ const auth = require('../middlewares/auth')
 let router = express.Router()
 
 let messages = []
+
+const storage = multer.diskStorage({
+    destination: "./public/",
+    filename: function(req, file, cb) {
+        cb(null, "IMAGE-"+Date.now()+path.extname(file.originalname))
+    }
+})
+
+const upload = multer({
+    storage,
+    limits: {fileSize:1000000}
+})
 
 router.get('/', auth, async (req, res) => {
     try {
@@ -40,18 +54,25 @@ router.get('/:messageId', auth, async (req, res) => {
     }
 })
 
-router.post('/', auth, async (req, res) => {
+router.post('/', auth, upload.single('picture'), async (req, res) => {
     try {
         if (!req.session.user) {
             return res.status(500).json({msg: "You have to login to add message !"})
         }
 
         const {content} = req.body
+        console.log(req.body, req.file)
         
         // messages.push(message)
+        if (req.file) {
+            picture = req.file.filename
+        } else {
+            picture = null
+        }
 
         let message = await messageModel.create({
             content: content,
+            picture: picture,
             autor: req.session.user._id
         })
 

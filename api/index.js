@@ -13,13 +13,15 @@ const authRoute     = require('./routes/auth')
 const app = express()
 app.use(morgan('dev'))
 app.use(helmet())
+
 app.use(cors({
     credentials: true,
-    origin: ['http://localhost:3000']
+    origin: ['http://localhost:3000'],
 }))
-app.use(bodyParser.json({
-    extended: true
-}))
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
 app.use(session({
     path: '/',
     httpOnly: true,
@@ -28,6 +30,7 @@ app.use(session({
     secret: "Secret12"
 }))
 
+app.use(express.static('public'))
 app.use('/api/messages',    messagesRoute)
 app.use('/api',             authRoute)
 
