@@ -18,7 +18,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({
     storage,
-    limits: {fileSize:1000000}
+    limits: {fileSize: 1000000}
 })
 
 router.get('/', auth, async (req, res) => {
@@ -61,7 +61,6 @@ router.post('/', auth, upload.single('picture'), async (req, res) => {
         }
 
         const {content} = req.body
-        console.log(req.body, req.file)
         
         // messages.push(message)
         if (req.file) {

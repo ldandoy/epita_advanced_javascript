@@ -13,13 +13,9 @@ const FormMessages = () => {
     const handlerSubmit = async (event) => {
         event.preventDefault()
 
-        console.log(form)
-
         var formData = new FormData()
         formData.append('content', form.content)
         formData.append('picture', form.picture)
-
-        console.log(formData)
 
         const res = await axios.post(`${process.env.REACT_APP_API_URL}/messages`, formData, {
             withCredentials: true,
@@ -28,7 +24,6 @@ const FormMessages = () => {
             }
         })
 
-        console.log(res.data)
         setMessages([...messages, res.data])
         setForm({ content: '', picture: null })
     }

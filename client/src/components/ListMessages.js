@@ -25,7 +25,7 @@ const ListMessages = () => {
     return <div className='pt-40 w-50 mx-auto'>
         {messages.map(message => <div key={message._id} className='card mb-10 relative'>
             {message.picture && <div className='card-image'>
-                <img src={`http://localhost:5000/${message.picture}`} alt="Message" />
+                <img src={`${message.picture}`} alt="Message" />
             </div>}
 
             <div className='card-body'>
