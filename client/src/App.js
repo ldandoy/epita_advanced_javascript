@@ -10,6 +10,7 @@ import Register from './pages/Register'
 import Logout from './pages/Logout'
 import Messages from './pages/Messages'
 import Default from './layouts/Default'
+import EditMessages from './pages/EditMessages'
 
 const App = () => {
     const [{ theme }] = useContext(ThemeContext)
@@ -20,6 +21,7 @@ const App = () => {
                 <Route path="/" element={<Default><Home /></Default>} />
                 <Route path='/animals' element={<Default><Animals /></Default>} />
                 <Route path='/messages' element={<Default><Messages /></Default>} />
+                <Route path="/messages/:messageId/edit" element={<Default><EditMessages /></Default>} />
                 <Route path='/login' element={<Default><Login /></Default>} />
                 <Route path='/register' element={<Default><Register /></Default>} />
                 <Route path='/logout' element={<Default><Logout /></Default>} />

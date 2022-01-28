@@ -1,13 +1,17 @@
 import React, {useEffect} from 'react'
 import axios from 'axios'
+import {Link} from 'react-router-dom'
 import { useRecoilState } from "recoil"
+import {FaPencilAlt} from 'react-icons/fa'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import dayjs from 'dayjs'
 
 import messagesState from '../atoms/messagesAtom'
+import userState from "../atoms/userAtom"
 import DeleteMessages from '../components/DeleteMessages'
 
 const ListMessages = () => {
+    const [{user}, setUser] = useRecoilState(userState)
     const [messages, setMessages] = useRecoilState(messagesState)
     dayjs.extend(relativeTime)
 
@@ -29,9 +33,12 @@ const ListMessages = () => {
             </div>}
 
             <div className='card-body'>
-                <DeleteMessages message={message} />
+                {message.autor._id === user._id && <>
+                    <Link to={`/messages/${message._id}/edit`} className='edit'><FaPencilAlt /></Link>
+                    <DeleteMessages message={message} />
+                </>}
                 <p>{message.content}</p>
-                <p className='txt-small txt-right'>-- {dayjs(message.created_at).fromNow(true)}</p>
+                <p className='txt-small txt-right'>-- {dayjs(message.created_at).fromNow(true)} by {message.autor.username}</p>
             </div>
         </div>)}
     </div>
