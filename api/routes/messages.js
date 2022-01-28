@@ -38,9 +38,9 @@ const upload = multer({
 router.get('/', auth, async (req, res) => {
     try {
         if (req.session && req.session.user) {
-            messages = await messageModel.find({
-                autor: req.session.user._id
-            }).populate({ path: 'autor', select: 'username email' })
+            messages = await messageModel.find({})
+                .populate({ path: 'autor', select: 'username email' })
+            
             return res.status(200).json(messages)
         } else {
             return res.status(503).json('You are not connected !')

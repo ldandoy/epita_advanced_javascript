@@ -35,7 +35,7 @@ const options = {
   swaggerDefinition,
   apis: ['./routes/*.js', './models/*.js'],
 };
-const swaggerSpec = swaggerJsdoc(options);
+const swaggerSpec = swaggerJsdoc(options, {explore: true});
 
 require('./utils/data')
 
