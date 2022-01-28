@@ -6,6 +6,32 @@ const userModel = require('../models/user')
 
 let router = express.Router()
 
+/**
+ * @swagger
+ * /register:
+ *   post:
+ *     summary: Register a new user
+ *     description: Register a new user
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *               email_cfg:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *               password_cfg:
+ *                 type: string
+ *     consumes:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: {msg: "User well created !"}
+ */
 router.post('/register', async (req, res) => {
     try {
         const {email, email_cfg, password, password_cfg, username} = req.body

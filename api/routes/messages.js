@@ -21,6 +21,20 @@ const upload = multer({
     limits: {fileSize: 1000000}
 })
 
+/**
+ * @swagger
+ * /messages:
+ *   get:
+ *     summary: Retrieve a list of messages
+ *     description: Retrieve a list of messages.
+ *     responses:
+ *       200:
+ *         description: A list of messages.
+ *       503:
+ *         description: When you're not logged
+ *       500:
+ *         description: Return error messages
+*/
 router.get('/', auth, async (req, res) => {
     try {
         if (req.session && req.session.user) {
@@ -29,7 +43,7 @@ router.get('/', auth, async (req, res) => {
             }).populate({ path: 'autor', select: 'username email' })
             return res.status(200).json(messages)
         } else {
-            return res.status(500).json('You are not connected !')
+            return res.status(503).json('You are not connected !')
         }
     } catch (error) {
         console.error(error)
@@ -37,6 +51,13 @@ router.get('/', auth, async (req, res) => {
     }
 })
 
+/**
+ * @swagger
+ * /messages/{messageId}:
+ *   get:
+ *     summary: Retrieve a message
+ *     description: Retrieve one message.
+*/
 router.get('/:messageId', auth, async (req, res) => {
     try {
         if (req.session && req.session.user) {
@@ -54,6 +75,23 @@ router.get('/:messageId', auth, async (req, res) => {
     }
 })
 
+/**
+ * @swagger
+ * /messages:
+ *   post:
+ *     summary: create a message
+ *     description: create a message
+ *     parameters:
+ *       - in: path
+ *         name: messageId
+ *         required: true
+ *         description: ObjectId ID of the message to retrieve.
+ *     responses:
+ *       200:
+ *         description: return the new message
+ *       500:
+ *         description: Return the error message
+*/
 router.post('/', auth, upload.single('picture'), async (req, res) => {
     try {
         if (!req.session.user) {
@@ -84,6 +122,18 @@ router.post('/', auth, upload.single('picture'), async (req, res) => {
     }
 })
 
+/**
+ * @swagger
+ * /messages/{messageId}:
+ *   put:
+ *     summary: Retrieve the message updated
+ *     description: Retrieve one message.
+ *     parameters:
+ *       - in: path
+ *         name: messageId
+ *         required: true
+ *         description: ObjectId ID of the message to retrieve.
+*/
 router.put('/:messageId', auth, async (req, res) => {
     try {
         if (!req.session.user) {
@@ -107,6 +157,17 @@ router.put('/:messageId', auth, async (req, res) => {
     }
 })
 
+/**
+ * @swagger
+ * /messages/{messageId}:
+ *   delete:
+ *     summary: delete a message
+ *     parameters:
+ *       - in: path
+ *         name: messageId
+ *         required: true
+ *         description: ObjectId ID of the message to retrieve.
+*/
 router.delete('/:messageId', auth, async (req,res) => {
     try {
         if (!req.session.user) {
